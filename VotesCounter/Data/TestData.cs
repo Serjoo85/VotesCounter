@@ -6,7 +6,6 @@ namespace VotesCounter.Data
 {
     public class TestData
     {
-        public int BlocksCount;
         public int ConCount;
         public int BullCount;
         public string[] Names;
@@ -16,7 +15,6 @@ namespace VotesCounter.Data
 
         public TestData(int blocksCount, int conCount, int bullCount)
         {
-            BlocksCount = blocksCount;
             ConCount = conCount;
             BullCount = bullCount;
             Names = GetNames(conCount);
