@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace VotesCounter.Data
@@ -35,11 +34,11 @@ namespace VotesCounter.Data
             {
                 if (name == "" || name.EndsWith('.'))
                 {
-                    name += Char.ToUpper((char) r.Next(97, 122));
+                    name += Char.ToUpper((char)r.Next(97, 122));
                 }
                 else
                 {
-                    name += (char) r.Next(97, 122);
+                    name += (char)r.Next(97, 122);
                 }
             }
 
@@ -74,7 +73,7 @@ namespace VotesCounter.Data
             {
                 // Количество перестановок равно количеству 
                 // кандидатов.
-                for (int j = 0; j < r.Next(2, count2*25); j++)
+                for (int j = 0; j < r.Next(2, count2 * 25); j++)
                 {
                     rnd1 = r.Next(0, count2);
                     rnd2 = r.Next(0, count2);

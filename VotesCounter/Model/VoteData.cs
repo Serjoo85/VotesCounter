@@ -42,6 +42,13 @@ namespace VotesCounter.Model
         {
             _items.Add(new VoteData(conCount, bullCount, names, bulletins));
         }
+        /// <summary>
+        /// Сбрасывает загруженные данные
+        /// </summary>
+        public static void Reset()
+        {
+            _items = new List<VoteData>();
+        }
         public void PrintAll()
         {
             foreach (var n in Names)
