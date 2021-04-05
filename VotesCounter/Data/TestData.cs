@@ -99,19 +99,6 @@ namespace VotesCounter.Data
 
             return bulletins;
         }
-
-        public void PrintAll()
-        {
-            for (int i = 0; i < this.BullCount; i++)
-            {
-                for (int j = 0; j < this.ConCount; j++)
-                {
-                    Console.Write(Bulletins[i, j] + " ");
-                }
-                Console.Write("\n");
-            }
-        }
-
     }
 }
 

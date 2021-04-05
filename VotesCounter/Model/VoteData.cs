@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace VotesCounter.Model
 {
@@ -26,6 +27,23 @@ namespace VotesCounter.Model
             _BullCount = bullCount;
             _Names = names;
             _Bulletins = bulletins;
+            _items.Add(this);
+        }
+
+        public void PrintAll()
+        {
+            foreach (var n in Names)
+            {
+                Console.WriteLine(n);
+            }
+            for (int i = 0; i < this.BullCount; i++)
+            {
+                for (int j = 0; j < this.ConCount; j++)
+                {
+                    Console.Write(Bulletins[i, j] + " ");
+                }
+                Console.Write("\n");
+            }
         }
     }
 }

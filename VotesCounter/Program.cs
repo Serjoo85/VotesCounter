@@ -1,5 +1,6 @@
 ﻿using System;
-using VotesCounter.Data;
+using VotesCounter.Model;
+using VotesCounter.Services;
 
 namespace VotesCounter
 {
@@ -7,6 +8,13 @@ namespace VotesCounter
     {
         static void Main(string[] args)
         {
+            var x = LoadServiece.LoadData();
+            var r = CountService.CountVote(VoteData.Items);
+            foreach (var v in r)
+            {
+                Console.WriteLine(v);
+            }
+            x.PrintAll();
             Console.ReadLine();
         }
     }
