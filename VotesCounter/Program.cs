@@ -8,14 +8,24 @@ namespace VotesCounter
     {
         static void Main(string[] args)
         {
-            var x = LoadServiece.LoadData();
-            var r = CountService.CountVote(VoteData.Items);
-            foreach (var v in r)
+            while (true)
             {
-                Console.WriteLine(v);
+                var x = LoadServiece.LoadData();
+                var r = CountService.CountVote(VoteData.Items);
+                var z = CountService.CountVote(VoteData.Items);
+                foreach (var v in r)
+                {
+                    Console.WriteLine(v);
+                }
+
+                foreach (var v in z)
+                {
+                    Console.WriteLine(v);
+                }
+
+                Console.ReadLine();
+                Console.Clear();
             }
-            x.PrintAll();
-            Console.ReadLine();
         }
     }
 }

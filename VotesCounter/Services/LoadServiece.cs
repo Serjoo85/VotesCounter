@@ -7,7 +7,7 @@ namespace VotesCounter.Services
     {
         public static VoteData LoadData()
         {
-            TestData t = new TestData(1, 20, 10);
+            TestData t = new TestData(1, 20, 1000);
             return new VoteData(t.ConCount, t.BullCount, t.Names, t.Bulletins);
         }
     }
