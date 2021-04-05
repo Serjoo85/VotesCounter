@@ -3,20 +3,20 @@ using VotesCounter.Model;
 
 namespace VotesCounter.Services
 {
-    public static class LoadServiece
+    public static class LoadService
     {
         public static void LoadData()
         {
 
-            TestData t = new TestData(1, 20, 1000);
+            TestData t = new (20, 1000);
             VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-            t = new TestData(1, 20, 1000);
+            t = new TestData(20, 1000);
             VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-            t = new TestData(1, 20, 1000);
+            t = new TestData(20, 1000);
             VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-            t = new TestData(1, 20, 1000);
+            t = new TestData(20, 1000);
             VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-            t = new TestData(1, 20, 1000);
+            t = new TestData(20, 1000);
             VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
 
 

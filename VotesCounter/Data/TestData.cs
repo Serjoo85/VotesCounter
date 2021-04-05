@@ -10,9 +10,9 @@ namespace VotesCounter.Data
         public string[] Names;
         public int[,] Bulletins;
 
-        private static Random r = new Random();
+        private static readonly Random r = new Random();
 
-        public TestData(int blocksCount, int conCount, int bullCount)
+        public TestData(int conCount, int bullCount)
         {
             ConCount = conCount;
             BullCount = bullCount;

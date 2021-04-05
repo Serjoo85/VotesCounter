@@ -32,16 +32,18 @@ namespace VotesCounter.Model
 
 
         /// <summary>
-        /// Один блок из файла
+        /// Создать блок
         /// </summary>
         /// <param name="conCount">Количество кандидатов</param>
         /// <param name="bullCount">Количество бюллетеней</param>
         /// <param name="names">Список имён</param>
         /// <param name="bulletins">Список бюллетеней</param>
+
         public static void CreateNewBlock(int conCount, int bullCount, string[] names, int[,] bulletins)
         {
             _items.Add(new VoteData(conCount, bullCount, names, bulletins));
         }
+
         /// <summary>
         /// Сбрасывает загруженные данные
         /// </summary>

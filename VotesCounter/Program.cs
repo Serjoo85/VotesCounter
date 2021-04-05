@@ -11,7 +11,7 @@ namespace VotesCounter
             while (true)
             {
                 VoteData.Reset();
-                LoadServiece.LoadData();
+                LoadService.LoadData();
                 var r = CountService.CountVote(VoteData.Items);
                 foreach (var v in r)
                 {
