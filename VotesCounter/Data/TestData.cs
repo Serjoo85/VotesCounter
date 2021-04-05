@@ -6,14 +6,21 @@ namespace VotesCounter.Data
 {
     public class TestData
     {
+        public int BlocksCount;
+        public int ConCount;
+        public int BullCount;
+        public string[] Names;
+        public int[,] Bulletins;
+
         private static Random r = new Random();
 
-        public static void GenerateTestData()
+        public TestData(int blocksCount, int conCount, int bullCount)
         {
-            int blocksCount = 1;
-
-            int conCount = r.Next(1, 20);
-
+            BlocksCount = blocksCount;
+            ConCount = conCount;
+            BullCount = bullCount;
+            Names = GetNames(conCount);
+            Bulletins = GetBulletins(bullCount, conCount);
 
         }
 
@@ -50,42 +57,61 @@ namespace VotesCounter.Data
         public static int[,] GetBulletins(int count1, int count2)
         {
             int[] x = new int[count2];
-            int[,] bulletitns = new int[count1, count2];
+            int[,] bulletins = new int[count1, count2];
+
+            // Генерация одинаковых бюллетеней (1,2,4 ..)
             for (int i = 0; i < count1; i++)
             {
-                for (int k = 0; k < count2; k++)
+                for (int j = 0; j < count2; j++)
                 {
-                    bulletitns[i, k] = k + 1;
+                    bulletins[i, j] = j + 1;
                 }
             }
 
+            // Перестановка чисел в каждой бюллетени.
             int temp = 0;
-            int rnd = 0;
+            int rnd1 = 0;
+            int rnd2 = 0;
             for (int i = 0; i < count1; i++)
             {
-                for (int k = 0; k < r.Next(2, count2); k++)
+                // Количество перестановок равно количеству 
+                // кандидатов.
+                for (int j = 0; j < r.Next(2, count2*2); j++)
                 {
-
-                    rnd = r.Next(0, count2);
-                    if (rnd == k)
+                    rnd1 = r.Next(0, count2);
+                    rnd2 = r.Next(0, count2);
+                    if (rnd1 == rnd2)
                     {
-                        if (k < count2)
+                        // Выход за пределы массива.
+                        if (rnd2 < count2 - 1)
                         {
-                            rnd += 1;
+                            rnd2 += 1;
                         }
                         else
                         {
-                            rnd -= 1;
+                            rnd2 -= 1;
                         }
                     }
 
-                    temp = bulletitns[i, k];
-                    bulletitns[i, k] = bulletitns[i, rnd];
-                    bulletitns[i, rnd] = temp;
+                    temp = bulletins[i, rnd1];
+                    bulletins[i, rnd1] = bulletins[i, rnd2];
+                    bulletins[i, rnd2] = temp;
                 }
             }
 
-            return bulletitns;
+            return bulletins;
+        }
+
+        public void PrintAll()
+        {
+            for (int i = 0; i < this.BullCount; i++)
+            {
+                for (int j = 0; j < this.ConCount; j++)
+                {
+                    Console.Write(Bulletins[i, j] + " ");
+                }
+                Console.Write("\n");
+            }
         }
 
     }
