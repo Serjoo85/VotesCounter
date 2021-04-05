@@ -1,4 +1,5 @@
 ﻿using System;
+using VotesCounter.Data;
 
 namespace VotesCounter
 {
@@ -6,7 +7,7 @@ namespace VotesCounter
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
         }
     }
 }
