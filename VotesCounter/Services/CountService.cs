@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using VotesCounter.Model;
 
 namespace VotesCounter.Services
@@ -8,10 +10,10 @@ namespace VotesCounter.Services
     {
         struct Candidate
         {
-            public int _voteSum;
+            public BigInteger _voteSum;
             public int _index;
 
-            public Candidate(int voteSum, int index)
+            public Candidate(BigInteger voteSum, int index)
             {
                 _voteSum = voteSum;
                 _index = index;
@@ -20,7 +22,7 @@ namespace VotesCounter.Services
 
         public static List<string> CountVote(List<VoteData> items)
         {
-            int tempResult = 0;
+            BigInteger tempResult;
             List<string> winners = new();
             List<Candidate> candidates = new();
             foreach (var vd in items)
@@ -31,19 +33,20 @@ namespace VotesCounter.Services
                     tempResult = 0;
                     for (int j = 0; j < vd.BullCount; j++)
                     {
-                        tempResult += vd.Bulletins[j, i];
+                        //var t = (BigInteger) (1 * Math.Pow(10, (double) (20 - vd.Bulletins[j, i])));
+                        tempResult += BigInteger.Pow(10, (20 - vd.Bulletins[j, i]));
                     }
 
                     candidates.Add(new Candidate(tempResult, i));
                 }
 
-                candidates.Sort((o1, o2) => o1._voteSum.CompareTo(o2._voteSum));
-
-                for (int i = 0; i < candidates.Count; i++)
+                //candidates.Sort((o1, o2) => o1._voteSum.CompareTo(o2._voteSum));
+                var x  = candidates.OrderByDescending(c => c._voteSum).ToList();
+                for (int i = 0; i < x.Count; i++)
                 {
-                    if (candidates[i]._voteSum == candidates[0]._voteSum)
+                    if (x[i]._voteSum == x[0]._voteSum)
                     {
-                        winners.Add(vd.Names[candidates[i]._index]);
+                        winners.Add(vd.Names[x[i]._index]);
                     }
                     else
                     {

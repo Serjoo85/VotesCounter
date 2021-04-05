@@ -40,7 +40,10 @@ namespace VotesCounter.Model
             {
                 for (int j = 0; j < this.ConCount; j++)
                 {
-                    Console.Write(Bulletins[i, j] + " ");
+                    if (Bulletins[i, j] == 1) Console.ForegroundColor = ConsoleColor.Yellow;
+                    if (Bulletins[i, j] == 2) Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(Bulletins[i, j].ToString("00") + " ");
+                    Console.ForegroundColor = ConsoleColor.White;
                 }
                 Console.Write("\n");
             }

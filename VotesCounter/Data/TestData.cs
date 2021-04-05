@@ -25,7 +25,7 @@ namespace VotesCounter.Data
         public static string[] GetNames(int count)
         {
             return Enumerable.Range(1, count)
-                .Select(i => String.Format("{0} {1}", GetName(), GetName())).ToArray();
+                .Select(i => String.Format("{0} {1}", GetName(), GetName() + i)).ToArray();
         }
 
         private static string GetName()
@@ -74,7 +74,7 @@ namespace VotesCounter.Data
             {
                 // Количество перестановок равно количеству 
                 // кандидатов.
-                for (int j = 0; j < r.Next(2, count2*2); j++)
+                for (int j = 0; j < r.Next(2, count2*25); j++)
                 {
                     rnd1 = r.Next(0, count2);
                     rnd2 = r.Next(0, count2);
@@ -97,6 +97,7 @@ namespace VotesCounter.Data
                 }
             }
 
+            //bulletins = new int[,] {{2, 1, 3}, {3, 1, 2}, {3, 2, 1}, {3, 2, 1}, {3, 2, 1}}; 
             return bulletins;
         }
     }
