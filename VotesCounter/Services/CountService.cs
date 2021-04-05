@@ -10,10 +10,9 @@ namespace VotesCounter.Services
         public static List<string> CountVote(List<VoteData> items)
         {
             List<string> winners = new();
-            List<Candidate> candidates = new();
             foreach (var vd in items)
             {
-
+                List<Candidate> candidates = new();
                 for (int i = 0; i < vd.ConCount; i++)
                 {
                     int[] votes = new int[vd.ConCount];

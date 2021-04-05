@@ -5,13 +5,14 @@ namespace VotesCounter.Model
 {
     public class VoteData
     {
-        private static List<VoteData> _items = new ();
+        private static List<VoteData> _items = new();
         public static List<VoteData> Items => _items;
 
-        private int _ConCount;
-        private int _BullCount;
-        private string[] _Names;
-        private int[,] _Bulletins;
+
+        private readonly int _ConCount;
+        private readonly int _BullCount;
+        private readonly string[] _Names;
+        private readonly int[,] _Bulletins;
 
         public int ConCount => _ConCount;
 
@@ -21,15 +22,26 @@ namespace VotesCounter.Model
 
         public int[,] Bulletins => _Bulletins;
 
-        public VoteData(int conCount, int bullCount, string[] names, int[,] bulletins)
+        private VoteData(int conCount, int bullCount, string[] names, int[,] bulletins)
         {
             _ConCount = conCount;
             _BullCount = bullCount;
             _Names = names;
             _Bulletins = bulletins;
-            _items.Add(this);
         }
 
+
+        /// <summary>
+        /// Один блок из файла
+        /// </summary>
+        /// <param name="conCount">Количество кандидатов</param>
+        /// <param name="bullCount">Количество бюллетеней</param>
+        /// <param name="names">Список имён</param>
+        /// <param name="bulletins">Список бюллетеней</param>
+        public static void CreateNewBlock(int conCount, int bullCount, string[] names, int[,] bulletins)
+        {
+            _items.Add(new VoteData(conCount, bullCount, names, bulletins));
+        }
         public void PrintAll()
         {
             foreach (var n in Names)

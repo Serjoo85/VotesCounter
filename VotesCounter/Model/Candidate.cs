@@ -2,12 +2,18 @@
 
 namespace VotesCounter.Model
 {
+
     public class Candidate : IComparable
     {
         private readonly int[] _Votes;
         private readonly int _Index;
         private readonly string _Name;
-
+        /// <summary>
+        /// Кандидат
+        /// </summary>
+        /// <param name="votes">Массив голосов</param>
+        /// <param name="index">Индекс</param>
+        /// <param name="name">Имя</param>
         public Candidate(int[] votes, int index, string name)
         {
             _Votes = votes;

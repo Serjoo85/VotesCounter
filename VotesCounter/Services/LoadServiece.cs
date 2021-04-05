@@ -5,10 +5,21 @@ namespace VotesCounter.Services
 {
     public static class LoadServiece
     {
-        public static VoteData LoadData()
+        public static void LoadData()
         {
+
             TestData t = new TestData(1, 20, 1000);
-            return new VoteData(t.ConCount, t.BullCount, t.Names, t.Bulletins);
+            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
+            t = new TestData(1, 20, 1000);
+            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
+            t = new TestData(1, 20, 1000);
+            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
+            t = new TestData(1, 20, 1000);
+            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
+            t = new TestData(1, 20, 1000);
+            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
+
+
         }
     }
 }

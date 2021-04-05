@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using VotesCounter.Model;
 using VotesCounter.Services;
 
@@ -10,15 +11,9 @@ namespace VotesCounter
         {
             while (true)
             {
-                var x = LoadServiece.LoadData();
+                LoadServiece.LoadData();
                 var r = CountService.CountVote(VoteData.Items);
-                var z = CountService.CountVote(VoteData.Items);
                 foreach (var v in r)
-                {
-                    Console.WriteLine(v);
-                }
-
-                foreach (var v in z)
                 {
                     Console.WriteLine(v);
                 }
