@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using VotesCounter.Interfaces;
 using VotesCounter.Model;
 
 namespace VotesCounter.Data
 {
-    public class TestData
+    public class TestData : ITestData
     {
         public int ConCount;
         public int BullCount;
@@ -14,7 +15,7 @@ namespace VotesCounter.Data
 
         private static readonly Random r = new Random();
 
-        public TestData(int conCount, int bullCount)
+        private TestData(int conCount, int bullCount)
         {
             ConCount = conCount;
             BullCount = bullCount;
@@ -29,7 +30,7 @@ namespace VotesCounter.Data
         /// <param name="conCount">Количество кандидатов</param>
         /// <param name="bullCount">Количество бюллетеней</param>
         /// <returns></returns>
-        public static List<VoteData> GetTestVoteData(int blocks, int conCount, int bullCount)
+        public List<VoteData> GetTestVoteData(int blocks, int conCount, int bullCount)
         {
             var items = new List<VoteData>();
             for (int i = 0; i < blocks; i++)
@@ -69,7 +70,7 @@ namespace VotesCounter.Data
         /// <param name="count1">Количество бюллетеней</param>
         /// <param name="count2">Количество кандидатов</param>
         /// <returns></returns>
-        public static int[,] GetBulletins(int count1, int count2)
+        private static int[,] GetBulletins(int count1, int count2)
         {
             int[] x = new int[count2];
             int[,] bulletins = new int[count1, count2];

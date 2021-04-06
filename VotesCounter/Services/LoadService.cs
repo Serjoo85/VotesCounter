@@ -17,10 +17,10 @@ namespace VotesCounter.Services
             vdr = new VoteDataRepository((CreateCandidateList(LoadResult.Result, fileName)));
         }
 
-        private static List<VoteData> LoadTestData()
+        private static List<VoteData> LoadTestData(out VoteDataRepository vdr)
         {
             List<VoteData> items = new();
-            items = TestData.GetTestVoteData(3, 20, 1000);
+            items = vdr.GetTestVoteData(3, 20, 1000);
             return items;
         }
 
