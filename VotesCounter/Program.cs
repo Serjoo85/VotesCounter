@@ -1,92 +1,96 @@
 ﻿using System;
-using Microsoft.VisualBasic;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using VotesCounter.Data;
 using VotesCounter.Services;
 using static System.Console;
 
 namespace VotesCounter
 {
-    [Flags]
-    enum UIEnt
-    {
-        emp = 0b0000,
-        isnum = 0b0001,
-        length = 0b0010,
-        big = 0b0100,
-        small = 0b1000,
-    }
     class Program
     {
-        private static UIEnt mi = new();
+        private static readonly Regex containsABadCharacter =
+            new Regex(@"[\\|\0\u0001\u0002\u0003\u0004\u0005\u0006\u000e\u000f\u0010\u0011\
+                u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f]");
+
+        private static bool key = false;
         static void Main(string[] args)
         {
-            VoteDataRepository vdr;
-            LoadService.LoadData(out vdr, "randomfile.txt");
-
+            UIEntrance();
             Console.ReadLine();
         }
 
         private static void UIEntrance()
         {
-            WriteLine("Выберите действие:\n" +
-                      "1. Сгенерировать тестовый файл.\n" +
-                      "2. Ввести имя существующего файла.\n" +
-                      "3. Выйти.");
-            var input = ReadLine();
-            int n = 0;
-            if (CheckMenuInput(input))
+            string input;
+            while (true)
             {
-                n = int.Parse(input);
+                do
+                {
+                    Console.Clear();
+                    WriteLine("Введите имя файла:");
+                    input = ReadLine();
+                    CheckMenuInput(input);
+                } while (!key);
+                UILoad(input);
+            }
+        }
+
+        private static void CheckMenuInput(string input)
+        {
+            key = (input.Trim(' ').Length) != 0;
+            if (key) key = (!containsABadCharacter.IsMatch(input));
+            if (!key) UIMessage(1);
+        }
+        private static void UILoad(string fileName)
+        {
+            VoteDataRepository vdr;
+            if (File.Exists(fileName))
+            {
+                LoadService.LoadData(out vdr, fileName);
+                UICount(vdr);
             }
             else
             {
-                UIEntFaile();
+                UIMessage(2);
             }
+        }
 
-            switch (n)
+        private static void UICount(VoteDataRepository vdr)
+        {
+            var result = CountService.CountVote(vdr.GetItems().ToList());
+            PrintResult(result);
+
+        }
+        private static void UIMessage(int x)
+        {
+            Console.Clear();
+            string msg = "";
+            switch (x)
             {
                 case 1:
-
+                    msg = "Недопустимое имя файла.\nНажмите любую кнопку...";
                     break;
                 case 2:
+                    msg = "Файла с таким именем не существует.\n" +
+                          "Нажмите любую кнопку...";
                     break;
                 case 3:
+                    msg = "Нажмите любую кнопку...";
                     break;
             }
-        }
-
-        private static bool CheckMenuInput(string input)
-        {
-            mi = 0;
-            if (input.Length == 1)
-            {
-                mi = (input.Trim(' ').Length == 1) ? mi = UIEnt.emp : mi = UIEnt.length;
-                if(mi == 0) mi = (Char.IsNumber(Convert.ToChar(input))) ? mi = UIEnt.emp : mi = UIEnt.isnum;
-                if(mi == 0) mi = (int.Parse(input) < 0) ? mi = UIEnt.emp : mi = UIEnt.small;
-                if(mi == 0) mi = (int.Parse(input) > 4) ? mi = UIEnt.emp : mi = UIEnt.big;
-            }
-            return (mi == 0);
-        }
-        private static void UserChoice()
-        {
-
-        }
-
-        private static void UIEntFaile()
-        {
-            string msg = "";
-            if ((mi & UIEnt.isnum) == UIEnt.isnum) msg = "Ввод не является числом.";
-            else if ((mi & UIEnt.length) == UIEnt.length) msg = "Недопустимое количество символов.";
-            else if ((mi & UIEnt.big) == UIEnt.big) msg = "Введенное число слишком большое.";
-            else if ((mi & UIEnt.small) == UIEnt.small) msg = "Введенное число слишком маленькое.";
-            msg += " Введите число от 1 до 3";
             WriteLine(msg);
+            ReadLine();
+            Console.Clear();
         }
 
-        private static void UIFileGen()
+        private static void PrintResult(List<string> result)
         {
-            CreateRandomFileService
-
+            foreach (var line in result) WriteLine(line);
+            WriteLine("Нажмите любую кнопку...");
+            ReadLine();
         }
     }
 }

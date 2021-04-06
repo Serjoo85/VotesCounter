@@ -14,7 +14,7 @@ namespace VotesCounter.Services
         public static void LoadData( out VoteDataRepository vdr, string fileName = "")
         {
             var LoadResult = LoadFromFileAsync(fileName);
-            vdr = new VoteDataRepository((CreateCandidateList(LoadResult.Result, fileName));
+            vdr = new VoteDataRepository((CreateCandidateList(LoadResult.Result, fileName)));
         }
 
         private static List<VoteData> LoadTestData()
