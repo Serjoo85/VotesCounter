@@ -7,6 +7,9 @@ namespace VotesCounter.Services
 {
     public static class CountService
     {
+        private static readonly object lockObj1 = new object();
+        private static readonly object lockObj2 = new object();
+
         public static List<string> CountVote(List<VoteData> items)
         {
             List<string> winners = new();
@@ -21,17 +24,24 @@ namespace VotesCounter.Services
 
         private static List<Candidate> CreateCandidates (VoteData vd)
         {
+
             List<Candidate> candidates = new();
-            for (int i = 0; i < vd.ConCount; i++)
+            Parallel.For(0, vd.ConCount, (i) =>
             {
                 int[] votes = new int[vd.ConCount];
-                for(int j = 0; j < vd.BullCount; j++)
+                for (int j = 0; j < vd.BullCount; j++)
                 {
-                    votes[vd.Bulletins[j, i] - 1] += 1;
+                    lock (lockObj1)
+                    {
+                        votes[vd.Bulletins[j, i] - 1] += 1;
+                    }
                 }
 
-                candidates.Add(new Candidate(votes, i, vd.Names[i]));
-            }
+                lock (lockObj2)
+                {
+                    candidates.Add(new Candidate(votes, i, vd.Names[i]));
+                }
+            });
             candidates.Sort();
             return candidates;
         }
