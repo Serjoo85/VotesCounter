@@ -9,15 +9,15 @@ namespace VotesCounter.Services
         public static void CreateFile(List<VoteData> items)
         {
             var _items = items;
-            List<string> s = new();
-            s.Add(_items.Count.ToString());
-            s.Add("");
+            List<string> list = new();
+            list.Add(_items.Count.ToString());
+            list.Add("");
             foreach (var item in _items)
             {
-                s.Add(item.ConCount.ToString());
+                list.Add(item.ConCount.ToString());
                 foreach (var name in item.Names)
                 {
-                    s.Add(name);
+                    list.Add(name);
                 }
 
                 string bull = "";
@@ -28,15 +28,15 @@ namespace VotesCounter.Services
                         bull += item.Bulletins[i, j].ToString();
                         if (j != item.Bulletins.GetLength(1)) bull += " ";
                     }
-                    s.Add(bull);
+                    list.Add(bull);
                     bull = "";
                 }
-                s.Add("");
+                list.Add("");
             }
 
             try
             {
-                System.IO.File.WriteAllLines("randomfile.txt", s);
+                System.IO.File.WriteAllLines("randomfile.txt", list);
                 Console.WriteLine("Файл успешно создан!");
             }
             catch (Exception e)
