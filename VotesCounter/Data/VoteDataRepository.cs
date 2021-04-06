@@ -5,11 +5,11 @@ namespace VotesCounter.Data
 {
     public class VoteDataRepository
     {
-        private List<VoteData> _Items;
+        private IList<VoteData> _Items;
 
-        public List<VoteData> GetItems() => _Items;
+        public IList<VoteData> GetItems() => _Items;
 
-        public VoteDataRepository(List<VoteData> items)
+        public VoteDataRepository(IList<VoteData> items)
         {
             _Items = items;
         }

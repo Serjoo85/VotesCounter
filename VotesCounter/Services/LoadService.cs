@@ -11,10 +11,10 @@ namespace VotesCounter.Services
     public static class LoadService
     {
         public static object LockObj = new object();
-        public static IList<VoteData> LoadData(string fileName = "")
+        public static void LoadData( out VoteDataRepository vdr, string fileName = "")
         {
             var LoadResult = LoadFromFileAsync(fileName);
-            return CreateCandidateList(LoadResult.Result, fileName);
+            vdr = new VoteDataRepository((CreateCandidateList(LoadResult.Result, fileName));
         }
 
         private static List<VoteData> LoadTestData()
