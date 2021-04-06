@@ -1,24 +1,16 @@
-﻿using VotesCounter.Data;
+﻿using System.Collections.Generic;
+using VotesCounter.Data;
 using VotesCounter.Model;
 
 namespace VotesCounter.Services
 {
     public static class LoadService
     {
-        public static void LoadData()
+        public static List<VoteData> LoadData()
         {
-
-            TestData t = new (20, 1000);
-            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-            t = new TestData(20, 1000);
-            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-            t = new TestData(20, 1000);
-            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-            t = new TestData(20, 1000);
-            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-            t = new TestData(20, 1000);
-            VoteData.CreateNewBlock(t.ConCount, t.BullCount, t.Names, t.Bulletins);
-
+            List<VoteData> items = new();
+            items = TestData.GetTestVoteData(3, 20, 1000);
+            return items;
 
         }
     }

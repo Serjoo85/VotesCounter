@@ -1,4 +1,5 @@
 ﻿using System;
+using VotesCounter.Data;
 using VotesCounter.Model;
 using VotesCounter.Services;
 
@@ -8,19 +9,9 @@ namespace VotesCounter
     {
         static void Main(string[] args)
         {
-            while (true)
-            {
-                VoteData.Reset();
-                LoadService.LoadData();
-                var r = CountService.CountVote(VoteData.Items);
-                foreach (var v in r)
-                {
-                    Console.WriteLine(v);
-                }
-
-                Console.ReadLine();
-                Console.Clear();
-            }
+            var repository = new VoteDataRepository(LoadService.LoadData());
+            CreateRandomFileService.CreateFile(repository.GetItems());
+            Console.ReadLine();
         }
     }
 }

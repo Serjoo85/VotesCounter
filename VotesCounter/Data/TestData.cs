@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using VotesCounter.Model;
 
 namespace VotesCounter.Data
 {
@@ -18,10 +20,26 @@ namespace VotesCounter.Data
             BullCount = bullCount;
             Names = GetNames(conCount);
             Bulletins = GetBulletins(bullCount, conCount);
-
         }
 
-        public static string[] GetNames(int count)
+        /// <summary>
+        /// Имитация загрузки из файла
+        /// </summary>
+        /// <param name="blocks">Количество блоков</param>
+        /// <param name="conCount">Количество кандидатов</param>
+        /// <param name="bullCount">Количество бюллетеней</param>
+        /// <returns></returns>
+        public static List<VoteData> GetTestVoteData(int blocks, int conCount, int bullCount)
+        {
+            var items = new List<VoteData>();
+            for (int i = 0; i < blocks; i++)
+            {
+                items.Add(new VoteData(conCount, bullCount, GetNames(conCount), GetBulletins(bullCount, conCount)));
+            }
+            return items;
+        }
+
+        private static string[] GetNames(int count)
         {
             return Enumerable.Range(1, count)
                 .Select(i => String.Format("{0} {1}", GetName(), GetName() + i)).ToArray();

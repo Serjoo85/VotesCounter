@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace VotesCounter.Model
 {
     public class VoteData
     {
-        private static List<VoteData> _items = new();
-        public static List<VoteData> Items => _items;
-
-
         private readonly int _ConCount;
         private readonly int _BullCount;
         private readonly string[] _Names;
@@ -22,15 +17,6 @@ namespace VotesCounter.Model
 
         public int[,] Bulletins => _Bulletins;
 
-        private VoteData(int conCount, int bullCount, string[] names, int[,] bulletins)
-        {
-            _ConCount = conCount;
-            _BullCount = bullCount;
-            _Names = names;
-            _Bulletins = bulletins;
-        }
-
-
         /// <summary>
         /// Создать блок
         /// </summary>
@@ -38,20 +24,15 @@ namespace VotesCounter.Model
         /// <param name="bullCount">Количество бюллетеней</param>
         /// <param name="names">Список имён</param>
         /// <param name="bulletins">Список бюллетеней</param>
-
-        public static void CreateNewBlock(int conCount, int bullCount, string[] names, int[,] bulletins)
+        public VoteData(int conCount, int bullCount, string[] names, int[,] bulletins)
         {
-            _items.Add(new VoteData(conCount, bullCount, names, bulletins));
+            _ConCount = conCount;
+            _BullCount = bullCount;
+            _Names = names;
+            _Bulletins = bulletins;
         }
 
-        /// <summary>
-        /// Сбрасывает загруженные данные
-        /// </summary>
-        public static void Reset()
-        {
-            _items = new List<VoteData>();
-        }
-        public void PrintAll()
+        public override string ToString()
         {
             foreach (var n in Names)
             {
@@ -68,6 +49,8 @@ namespace VotesCounter.Model
                 }
                 Console.Write("\n");
             }
+
+            return "";
         }
     }
 }
