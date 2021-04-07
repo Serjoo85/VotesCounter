@@ -7,18 +7,16 @@ namespace VotesCounter.Services
 {
     public class CountService
     {
-        public static List<string> CountVote(List<VoteData> items)
+        public static void CountVote(StepData sd)
         {
-            List<string> winners = new();
-            foreach (var vd in items)
+            foreach (var vd in sd.VdList)
             {
-                List <Candidate> candidates = CreateCandidates(vd);
-                CalculateWinners(winners, candidates);
+                List<Candidate> candidates = CreateCandidates(vd);
+                CalculateWinners(sd, candidates);
             }
-            return winners;
         }
 
-        private static List<Candidate> CreateCandidates (VoteData vd)
+        private static List<Candidate> CreateCandidates(VoteData vd)
         {
             List<Candidate> candidates = new();
             Parallel.For(0, vd.canCount, (i) =>
@@ -34,9 +32,9 @@ namespace VotesCounter.Services
             return candidates;
         }
 
-        private static void CalculateWinners(List<string> winners, List<Candidate> candidates)
+        private static void CalculateWinners(StepData sd, List<Candidate> candidates)
         {
-            winners.AddRange(from cand in candidates where cand.CompareTo(candidates[^1]) == 0 select cand.Name);
+            sd.Winners.AddRange(from cand in candidates where cand.CompareTo(candidates[^1]) == 0 select cand.Name);
         }
     }
 }
