@@ -4,9 +4,11 @@ namespace VotesCounter
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            UInterface.UInterface.UiEntrance();
+            Console.ReadLine();
         }
     }
 }
