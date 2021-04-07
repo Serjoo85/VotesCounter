@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using VotesCounter.Data;
 using VotesCounter.Model;
 
 namespace VotesCounter.Services
 {
     public static class LoadService
     {
-        static bool flag = true;
+        static bool flag;
 
         public static object LockObj = new object();
         public static IList<VoteData> LoadData(string fileName = "")
         {
-            flag = true;
-            var LoadResult = LoadFromFileAsync(fileName);
-            return ((CreateCandidateList(LoadResult.Result, fileName)));
+            if (File.Exists(fileName))
+            {
+                flag = true;
+                var LoadResult = LoadFromFileAsync(fileName);
+                return CreateCandidateList(LoadResult.Result, fileName);
+            }
         }
 
         private static async Task<IList<string>> LoadFromFileAsync(string fileName)
@@ -54,19 +56,20 @@ namespace VotesCounter.Services
                         if (flag)
                         {
                             // Разбиваем на блоки.
-                            // Если пустая строка (разделитель)
+                            // Если пустая строка (разделитель).
                             if (string.IsNullOrEmpty(voteDataString[i].Trim(' ')))
                             {
                                 var list = blockList.Clone();
                                 CreateVoteData(list, i, items);
                                 blockList = new List<string>();
                             }
-                            // Если последняя строка
+                            // Если последняя строка.
                             else if (i == voteDataString.Count - 1)
                             {
                                 blockList.Add(voteDataString[i]);
                                 CreateVoteData(blockList, i, items);
                             }
+                            // Читаем тело.
                             else
                             {
                                 blockList.Add(voteDataString[i]);
@@ -94,7 +97,7 @@ namespace VotesCounter.Services
         {
             int lineCurr = lineCount - block.Count;
             int conCount;
-            
+
             if (int.TryParse(block[0], out conCount))
             {
                 if (conCount > 0 && conCount <= 20)
@@ -144,7 +147,7 @@ namespace VotesCounter.Services
         }
         private static void PrintMsg(string mtext, int lineNumber)
         {
-            Console.WriteLine(string.Format("Ошибка обработки данных. {0}. стр. {1}", mtext, lineNumber));
+            Console.WriteLine(string.Format("Ошибка обработки данных. {0}. стр. {1}", mtext, lineNumber + 1));
         }
     }
 
