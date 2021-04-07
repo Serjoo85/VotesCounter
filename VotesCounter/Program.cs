@@ -1,4 +1,7 @@
 ﻿using System;
+using VotesCounter.Data;
+using VotesCounter.Services;
+
 namespace VotesCounter
 {
     class Program

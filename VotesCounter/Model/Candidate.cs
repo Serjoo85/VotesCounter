@@ -8,6 +8,7 @@ namespace VotesCounter.Model
         private readonly int[] _Votes;
         private readonly int _Index;
         private readonly string _Name;
+
         /// <summary>
         /// Кандидат
         /// </summary>
@@ -41,12 +42,11 @@ namespace VotesCounter.Model
                 {
                     return -1;
                 }
-                else if (i == this._Votes.Length & this._Votes[i] < comp._Votes[i])
+                else if (i == this._Votes.Length - 1)
                 {
                     return 0;
                 }
             }
-
             return 0;
         }
     }

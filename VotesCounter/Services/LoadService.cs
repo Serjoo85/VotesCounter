@@ -46,43 +46,44 @@ namespace VotesCounter.Services
         private static IList<VoteData> CreateCandidateList(IList<string> voteDataString, string fileName)
         {
             IList<VoteData> items = new List<VoteData>();
-            int blockCount;
-            int lineCount = 0;
-            if (int.TryParse(voteDataString[0], out blockCount))
+            if (int.TryParse(voteDataString[0], out var blockCount))
             {
                 if (blockCount > 0)
                 {
                     IList<string> blockList = new List<string>();
-                    foreach (var line in voteDataString)
+                    for (int i = 2; i < voteDataString.Count; i++)
                     {
-                        lineCount++;
                         // Разбиваем на блоки.
-                        if (lineCount > 2)
+                        // Если пустая строка (разделитель)
+                        if (string.IsNullOrEmpty(voteDataString[i].Trim(' ')))
                         {
-                            if (!string.IsNullOrEmpty(line.Trim(' ')))
-                            {
-                                blockList.Add(line);
-                            }
-                            else
-                            {
-                                var list = blockList.Clone();
-                                CreateVoteData(list, lineCount, items);
-                                blockList = new List<string>();
-                            }
+                            var list = blockList.Clone();
+                            CreateVoteData(list, i, items);
+                            blockList = new List<string>();
+                        }
+                        // Если последняя строка
+                        else if (i == voteDataString.Count - 1)
+                        {
+                            blockList.Add(voteDataString[i]);
+                            CreateVoteData(blockList, i);
+                        }
+                        else
+                        {
+                            blockList.Add(voteDataString[i]);
                         }
                     }
                     return items;
                 }
                 else
                 {
-                    PrintMsg("Недопустимое значение количества блоков", lineCount);
-                    return null;
+                    PrintMsg("Недопустимое значение количества блоков", 1);
+                    return items;
                 }
             }
             else
             {
-                PrintMsg("Недопустимое значение количества блоков", lineCount);
-                return null;
+                PrintMsg("Недопустимое значение количества блоков", 1);
+                return items;
             }
         }
 
@@ -98,7 +99,7 @@ namespace VotesCounter.Services
                     int bullCount = block.Count - conCount - 1;
 
                     string[] names = new string[conCount];
-                    int[,] bulletins = new int[block.Count - 1 - conCount, 20];
+                    int[,] bulletins = new int[bullCount, conCount];
 
                     for (int i = 0; i < conCount; i++)
                     {

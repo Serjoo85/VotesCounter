@@ -18,13 +18,11 @@ namespace VotesCounter.Services
                 List <Candidate> candidates = CreateCandidates(vd);
                 CalculateWinners(winners, candidates);
             }
-
             return winners;
         }
 
         private static List<Candidate> CreateCandidates (VoteData vd)
         {
-
             List<Candidate> candidates = new();
             Parallel.For(0, vd.ConCount, (i) =>
             {
@@ -48,8 +46,7 @@ namespace VotesCounter.Services
 
         private static void CalculateWinners(List<string> winners, List<Candidate> candidates)
         {
-            winners.AddRange(from cand in candidates where cand == candidates[^1] select cand.Name);
-            winners.Add("\n");
+            winners.AddRange(from cand in candidates where cand.CompareTo(candidates[^1]) == 0 select cand.Name);
         }
     }
 }

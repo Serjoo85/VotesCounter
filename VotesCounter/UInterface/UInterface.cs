@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using VotesCounter.Data;
 using VotesCounter.Model;
 using VotesCounter.Services;
 using static System.Console;
@@ -19,7 +18,7 @@ namespace VotesCounter.UInterface
         static UInterface()
         {
             input = "";
-            FileNamePattern = 
+            FileNamePattern =
             new Regex(@"[\\|\0\u0001\u0002\u0003\u0004\u0005\u0006\u000e\u000f\u0010\u0011\
                 u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f]");
             key = false;
@@ -29,11 +28,12 @@ namespace VotesCounter.UInterface
         {
             while (true)
             {
+                Console.Clear();
                 do
                 {
-                    Console.Clear();
                     WriteLine("Введите имя файла:");
                     input = ReadLine();
+                    Console.Clear();
                     CheckMenuInput(input);
                 } while (!key);
                 UILoad(input);
@@ -46,17 +46,25 @@ namespace VotesCounter.UInterface
             if (key) key = (!FileNamePattern.IsMatch(input));
             if (!key) UIFaile(1);
         }
-        private static void UILoad(string fileName)
+        private static bool UILoad(string fileName)
         {
             if (File.Exists(fileName))
             {
-                
-                UICount(LoadService.LoadData(fileName));
+                var vdr = LoadService.LoadData(fileName);
+                if (vdr.Count > 0)
+                {
+                    UICount(LoadService.LoadData(fileName));
+                }
+                else
+                {
+                    UIFaile(3);
+                }
             }
             else
             {
                 UIFaile(2);
             }
+            return false;
         }
 
         private static void UICount(IList<VoteData> vdr)
@@ -77,6 +85,9 @@ namespace VotesCounter.UInterface
                 case 2:
                     msg = "Файла с таким именем не существует.\nНажмите любую кнопку...";
                     break;
+                case 3:
+                    msg = "Файл не считан.\nНажмите любую кнопку...";
+                    break;
             }
             WriteLine(msg);
             ReadLine();
@@ -85,7 +96,7 @@ namespace VotesCounter.UInterface
 
         private static void PrintResult(List<string> result)
         {
-            foreach (var line in result) WriteLine(line);
+            foreach (var line in result) WriteLine(line + "\n");
             WriteLine("Нажмите любую кнопку...");
             ReadLine();
         }

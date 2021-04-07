@@ -36,7 +36,7 @@ namespace VotesCounter.Services
 
             try
             {
-                System.IO.File.WriteAllLines("randomfile.txt", list);
+                System.IO.File.WriteAllLines("VoteTest.txt", list);
                 Console.WriteLine("Файл успешно создан!");
             }
             catch (Exception e)
