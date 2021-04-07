@@ -10,16 +10,14 @@ namespace VotesCounter.Services
 {
     public static class LoadService
     {
+        static bool flag = true;
+
         public static object LockObj = new object();
         public static IList<VoteData> LoadData(string fileName = "")
         {
+            flag = true;
             var LoadResult = LoadFromFileAsync(fileName);
             return ((CreateCandidateList(LoadResult.Result, fileName)));
-        }
-
-        private static List<VoteData> LoadTestData()
-        {
-            return TestData.GetTestVoteData(1,20,1000);
         }
 
         private static async Task<IList<string>> LoadFromFileAsync(string fileName)
@@ -53,26 +51,31 @@ namespace VotesCounter.Services
                     IList<string> blockList = new List<string>();
                     for (int i = 2; i < voteDataString.Count; i++)
                     {
-                        // Разбиваем на блоки.
-                        // Если пустая строка (разделитель)
-                        if (string.IsNullOrEmpty(voteDataString[i].Trim(' ')))
+                        if (flag)
                         {
-                            var list = blockList.Clone();
-                            CreateVoteData(list, i, items);
-                            blockList = new List<string>();
-                        }
-                        // Если последняя строка
-                        else if (i == voteDataString.Count - 1)
-                        {
-                            blockList.Add(voteDataString[i]);
-                            CreateVoteData(blockList, i);
-                        }
-                        else
-                        {
-                            blockList.Add(voteDataString[i]);
+                            // Разбиваем на блоки.
+                            // Если пустая строка (разделитель)
+                            if (string.IsNullOrEmpty(voteDataString[i].Trim(' ')))
+                            {
+                                var list = blockList.Clone();
+                                CreateVoteData(list, i, items);
+                                blockList = new List<string>();
+                            }
+                            // Если последняя строка
+                            else if (i == voteDataString.Count - 1)
+                            {
+                                blockList.Add(voteDataString[i]);
+                                CreateVoteData(blockList, i, items);
+                            }
+                            else
+                            {
+                                blockList.Add(voteDataString[i]);
+                            }
                         }
                     }
-                    return items;
+
+                    var x = (flag) ? items : new List<VoteData>();
+                    return x;
                 }
                 else
                 {
@@ -91,7 +94,7 @@ namespace VotesCounter.Services
         {
             int lineCurr = lineCount - block.Count;
             int conCount;
-            bool flag = true;
+            
             if (int.TryParse(block[0], out conCount))
             {
                 if (conCount > 0 && conCount <= 20)
@@ -129,11 +132,13 @@ namespace VotesCounter.Services
                 }
                 else
                 {
+                    flag = false;
                     PrintMsg("Недопустимое значение количества кандидатов", lineCurr);
                 }
             }
             else
             {
+                flag = false;
                 PrintMsg("Недопустимое значение количества кандидатов", lineCurr);
             }
         }

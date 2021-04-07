@@ -9,7 +9,7 @@ using static System.Console;
 
 namespace VotesCounter.UInterface
 {
-    public static class UInterface
+    public class UInterface
     {
         static string input;
         private static readonly Regex FileNamePattern;
@@ -24,7 +24,7 @@ namespace VotesCounter.UInterface
             key = false;
         }
 
-        public static void UIEntrance()
+        public void UIEntrance()
         {
             while (true)
             {
@@ -36,28 +36,33 @@ namespace VotesCounter.UInterface
                     Console.Clear();
                     CheckMenuInput(input);
                 } while (!key);
-                UILoad(input);
+
+                if (UILoad(input))
+                {
+                    UICount(LoadService.LoadData(input));
+                }
             }
         }
 
-        private static void CheckMenuInput(string input)
+        private void CheckMenuInput(string input)
         {
             key = (input.Trim(' ').Length) != 0;
             if (key) key = (!FileNamePattern.IsMatch(input));
             if (!key) UIFaile(1);
         }
-        private static bool UILoad(string fileName)
+        private bool UILoad(string fileName)
         {
             if (File.Exists(fileName))
             {
                 var vdr = LoadService.LoadData(fileName);
                 if (vdr.Count > 0)
                 {
-                    UICount(LoadService.LoadData(fileName));
+                    return true;
                 }
                 else
                 {
                     UIFaile(3);
+                    return false;
                 }
             }
             else
@@ -67,15 +72,14 @@ namespace VotesCounter.UInterface
             return false;
         }
 
-        private static void UICount(IList<VoteData> vdr)
+        private void UICount(IList<VoteData> vdr)
         {
             var result = CountService.CountVote(vdr.ToList());
             PrintResult(result);
 
         }
-        private static void UIFaile(int x)
+        private void UIFaile(int x)
         {
-            Console.Clear();
             string msg = "";
             switch (x)
             {
@@ -94,7 +98,7 @@ namespace VotesCounter.UInterface
             Console.Clear();
         }
 
-        private static void PrintResult(List<string> result)
+        private void PrintResult(List<string> result)
         {
             foreach (var line in result) WriteLine(line + "\n");
             WriteLine("Нажмите любую кнопку...");
