@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using VotesCounter.Model;
 
 namespace VotesCounter.Services
 {
-    public static class LoadService
+    public class LoadService
     {
         private static StepData _sd;
-        public static object LockObj = new object();
         public static StepData LoadData(string fileName, StepData sd)
         {
             _sd = sd;
@@ -117,7 +115,7 @@ namespace VotesCounter.Services
                         names[i] = block[i + 1];
                     }
 
-                    Parallel.For(canCount + 1, block.Count, (i,state) =>
+                    Parallel.For(canCount + 1, block.Count, (i, state) =>
                     {
                         var bulletin = block[i].Split();
                         for (int j = 0; j < canCount; j++)

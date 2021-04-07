@@ -5,14 +5,16 @@ using VotesCounter.Model;
 
 namespace VotesCounter.Services
 {
-    public class CountService
+    public static class CountService
     {
+        private static StepData _sd;
         public static void CountVote(StepData sd)
         {
-            foreach (var vd in sd.VdList)
+            _sd = sd;
+            foreach (var vd in _sd.VdList)
             {
                 List<Candidate> candidates = CreateCandidates(vd);
-                CalculateWinners(sd, candidates);
+                CalculateWinners(candidates);
             }
         }
 
@@ -32,9 +34,9 @@ namespace VotesCounter.Services
             return candidates;
         }
 
-        private static void CalculateWinners(StepData sd, List<Candidate> candidates)
+        private static void CalculateWinners(List<Candidate> candidates)
         {
-            sd.Winners.AddRange(from cand in candidates where cand.CompareTo(candidates[^1]) == 0 select cand.Name);
+            _sd.Winners.AddRange(from cand in candidates where cand.CompareTo(candidates[^1]) == 0 select cand.Name);
         }
     }
 }
