@@ -10,14 +10,23 @@ namespace VotesCounter.Model
 {
     public class StepData
     {
-        private List<VoteData> vdList;
-        private string ErrorMessage;
-        public bool flag;
+        private IList<VoteData> _VdList;
+        public IList<VoteData> VdList => _VdList;
 
-        public StepData()
+        public void AddVoteData(VoteData vd)
         {
-            vdList = new List<VoteData>();
+            _VdList.Add(vd);
         }
+
+        protected string ErrorMessage;
+
+        public void PrintErr()
+        {
+            Console.WriteLine(ErrorMessage);
+        }
+
+        public virtual string GetName() => nameof(StepData);
+        public virtual bool GetKey() => true;
 
     }
 
@@ -28,11 +37,37 @@ namespace VotesCounter.Model
 
     public class LoadFail: StepData
     {
+        public LoadFail(string msg) => ErrorMessage = msg;
 
+        public override string GetName() => nameof(LoadFail);
+        public override bool GetKey() => false;
+
+    }
+
+
+
+    public class CreateCandidateListFail: StepData
+    {
+        public CreateCandidateListFail(string msg) => ErrorMessage = msg;
+
+        public override string GetName() => nameof(CreateCandidateListFail);
+        public override bool GetKey() => false;
     }
 
     public class CountFail: StepData
     {
-
+        public CountFail(string msg) => ErrorMessage = msg;
+        public override string GetName() => nameof(CountFail);
+        public override bool GetKey() => false;
     }
+
+    public class CreateVoteDataFail: StepData
+    {
+        public CreateVoteDataFail(string msg) => ErrorMessage = msg;
+
+        public override string GetName() => nameof(CreateVoteDataFail);
+        public override bool GetKey() => false;
+    }
+
+    
 }

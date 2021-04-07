@@ -7,7 +7,7 @@ namespace VotesCounter.Data
 {
     public class TestData
     {
-        public int ConCount;
+        public int canCount;
         public int BullCount;
         public string[] Names;
         public int[,] Bulletins;
@@ -15,27 +15,27 @@ namespace VotesCounter.Data
         private static readonly Random r = new Random();
 
 
-        private TestData(int conCount, int bullCount)
+        private TestData(int canCount, int bullCount)
         {
-            ConCount = conCount;
+            canCount = canCount;
             BullCount = bullCount;
-            Names = GetNames(conCount);
-            Bulletins = GetBulletins(bullCount, conCount);
+            Names = GetNames(canCount);
+            Bulletins = GetBulletins(bullCount, canCount);
         }
 
         /// <summary>
         /// Имитация загрузки из файла
         /// </summary>
         /// <param name="blocks">Количество блоков</param>
-        /// <param name="conCount">Количество кандидатов</param>
+        /// <param name="canCount">Количество кандидатов</param>
         /// <param name="bullCount">Количество бюллетеней</param>
         /// <returns></returns>
-        public static List<VoteData> GetTestVoteData(int blocks, int conCount, int bullCount)
+        public static List<VoteData> GetTestVoteData(int blocks, int canCount, int bullCount)
         {
             var items = new List<VoteData>();
             for (int i = 0; i < blocks; i++)
             {
-                items.Add(new VoteData(conCount, bullCount, GetNames(conCount), GetBulletins(bullCount, conCount)));
+                items.Add(new VoteData(canCount, bullCount, GetNames(canCount), GetBulletins(bullCount, canCount)));
             }
             return items;
         }

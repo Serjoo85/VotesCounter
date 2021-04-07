@@ -9,24 +9,23 @@ namespace VotesCounter.Services
 {
     public static class LoadService
     {
-        static bool flag;
-
         public static object LockObj = new object();
-        public static IList<VoteData> LoadData(string fileName = "")
+        public static StepData LoadData(string fileName, StepData sd)
         {
             if (File.Exists(fileName))
             {
-                flag = true;
-                var LoadResult = LoadFromFileAsync(fileName);
-                return CreateCandidateList(LoadResult.Result, fileName);
+                var LoadResult = LoadFromFileAsync(fileName, sd);
+                if(sd.GetKey())sd.vdList = CreateCandidateList(LoadResult.Result, sd);
+                return sd;
+            }
+            else
+            {
+                return new LoadFail("Файл не найден.\nНажмите любую клавишу...");
             }
 
-            {
-                return null;
-            }
         }
 
-        private static async Task<IList<string>> LoadFromFileAsync(string fileName)
+        private static async Task<IList<string>> LoadFromFileAsync(string fileName, StepData sd)
         {
             IList<string> voteDataString = new List<string>();
             try
@@ -40,14 +39,12 @@ namespace VotesCounter.Services
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Не удалось прочитать файл {fileName}, ошибка:");
-                Console.WriteLine(e.Message);
+                sd = new LoadFail("Не удалось прочитать файл {fileName}, ошибка:");
             }
-
             return voteDataString;
         }
 
-        private static IList<VoteData> CreateCandidateList(IList<string> voteDataString, string fileName)
+        private static StepData CreateCandidateList(IList<string> voteDataString, StepData sd)
         {
             IList<VoteData> items = new List<VoteData>();
             if (int.TryParse(voteDataString[0], out var blockCount))
@@ -57,21 +54,21 @@ namespace VotesCounter.Services
                     IList<string> blockList = new List<string>();
                     for (int i = 2; i < voteDataString.Count; i++)
                     {
-                        if (flag)
+                        if (sd.GetKey())
                         {
                             // Разбиваем на блоки.
                             // Если пустая строка (разделитель).
                             if (string.IsNullOrEmpty(voteDataString[i].Trim(' ')))
                             {
                                 var list = blockList.Clone();
-                                CreateVoteData(list, i, items);
+                                CreateVoteData(list, i, sd);
                                 blockList = new List<string>();
                             }
                             // Если последняя строка.
                             else if (i == voteDataString.Count - 1)
                             {
                                 blockList.Add(voteDataString[i]);
-                                CreateVoteData(blockList, i, items);
+                                CreateVoteData(blockList, i, sd);
                             }
                             // Читаем тело.
                             else
@@ -79,79 +76,78 @@ namespace VotesCounter.Services
                                 blockList.Add(voteDataString[i]);
                             }
                         }
+                        else
+                        {
+                            return sd;
+                        }
                     }
-
-                    var x = (flag) ? items : new List<VoteData>();
-                    return x;
                 }
                 else
                 {
-                    PrintMsg("Недопустимое значение количества блоков", 1);
-                    return items;
+                    sd = new CreateCandidateListFail(GetMsg("Количество блоков меньше или равно нулю", 1));
+                    return sd;
                 }
             }
             else
             {
-                PrintMsg("Недопустимое значение количества блоков", 1);
-                return items;
+                sd = new CreateCandidateListFail(GetMsg("Количество блоков не является числом.", 1));
+                return sd;
             }
+            return sd;
         }
 
-        private static void CreateVoteData(IList<string> block, int lineCount, IList<VoteData> items)
+        private static void CreateVoteData(IList<string> block, int lineCount, StepData sd)
         {
             int lineCurr = lineCount - block.Count;
-            int conCount;
 
-            if (int.TryParse(block[0], out conCount))
+            if (int.TryParse(block[0], out var canCount))
             {
-                if (conCount > 0 && conCount <= 20)
+                if (canCount > 0 && canCount <= 20)
                 {
-                    int bullCount = block.Count - conCount - 1;
+                    int bullCount = block.Count - canCount - 1;
 
-                    string[] names = new string[conCount];
-                    int[,] bulletins = new int[bullCount, conCount];
+                    string[] names = new string[canCount];
+                    int[,] bulletins = new int[bullCount, canCount];
 
-                    for (int i = 0; i < conCount; i++)
+                    for (int i = 0; i < canCount; i++)
                     {
                         names[i] = block[i + 1];
                     }
 
-                    Parallel.For(conCount + 1, block.Count, (i) =>
+                    Parallel.For(canCount + 1, block.Count, (i) =>
                     {
                         var bulletin = block[i].Split();
-                        int n;
-                        for (int j = 0; j < conCount; j++)
+                        for (int j = 0; j < canCount; j++)
                         {
-                            if (int.TryParse(bulletin[j], out n))
+                            if (int.TryParse(bulletin[j], out var n))
                             {
-                                bulletins[i - conCount - 1, j] = n;
+                                bulletins[i - canCount - 1, j] = n;
                             }
                             else
                             {
-                                PrintMsg("Недопустимое значение количества голосов", lineCurr + i);
-                                flag = false;
+                                sd = new CreateVoteDataFail(GetMsg(
+                                    "Недопустимое значение количества голосов", lineCurr + i));
                                 break;
                             }
-
                         }
                     });
-                    if (flag) items.Add(new VoteData(conCount, bullCount, names, bulletins));
+                    if (sd.GetKey()) sd.AddVoteData(new VoteData(canCount, bullCount, names, bulletins));
                 }
                 else
                 {
-                    flag = false;
-                    PrintMsg("Недопустимое значение количества кандидатов", lineCurr);
+                    sd = new CreateVoteDataFail(GetMsg(
+                        "Недопустимое значение количества голосов", lineCurr));
                 }
             }
             else
             {
-                flag = false;
-                PrintMsg("Недопустимое значение количества кандидатов", lineCurr);
+                sd = new CreateVoteDataFail(GetMsg(
+                    "Недопустимое значение количества голосов", lineCurr));
             }
         }
-        private static void PrintMsg(string mtext, int lineNumber)
+        private static string GetMsg(string mtext, int lineNumber)
         {
-            Console.WriteLine(string.Format("Ошибка обработки данных. {0}. стр. {1}", mtext, lineNumber + 1));
+            return string.Format("Ошибка обработки данных. {0}. стр. {1}", mtext, lineNumber + 1);
         }
     }
 

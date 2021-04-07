@@ -30,10 +30,9 @@ namespace VotesCounter.UInterface
             while (true)
             {
                 Input();
-                if (UILoad(input,sd))
-                {
-                    UICount(LoadService.LoadData(input));
-                }
+                UILoad(input, sd);
+                UICount(sd);
+
             }
         }
 
@@ -47,40 +46,26 @@ namespace VotesCounter.UInterface
                 Console.Clear();
                 CheckInput(input);
             } while (!key);
-            
+
             void CheckInput(string input)
             {
                 key = (input.Trim(' ').Length) != 0;
                 if (key) key = (!FileNamePattern.IsMatch(input));
-                if (!key) UIFaile(1);
+                if (!key) WriteLine("Недопустимое имя файла.\n" +
+                                    "Нажмите любую кнопку...");
             }
         }
 
-        private static bool UILoad(string fileName, StepData sd)
+        private static void UILoad(string fileName, StepData sd)
         {
-            var vdr = LoadService.LoadData(fileName);
-            if (vdr.Count > 0)
-            {
-                return true;
-            }
-            else
-            {
-                UIFaile(3);
-                return false;
-            }
-            return false;
+            sd = LoadService.LoadData(fileName, sd);
         }
 
-
-
-
-
-
-        private static void UICount(IList<VoteData> vdr)
+        private static void UICount(StepData sd)
         {
-            var result = CountService.CountVote(vdr.ToList());
-            PrintResult(result);
-
+            if (sd.GetKey()) CountService.CountVote(sd.VdList.ToList());
+            sd.PrintErr();
+            //var result = CountService.CountVote(sd);
         }
         private static void UIFaile(int x)
         {
@@ -88,7 +73,7 @@ namespace VotesCounter.UInterface
             switch (x)
             {
                 case 1:
-                    msg = "Недопустимое имя файла.\nНажмите любую кнопку...";
+                    msg = "";
                     break;
                 case 2:
                     msg = "Файла с таким именем не существует.\nНажмите любую кнопку...";

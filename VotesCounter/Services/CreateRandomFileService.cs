@@ -14,7 +14,7 @@ namespace VotesCounter.Services
             list.Add("");
             foreach (var item in _items)
             {
-                list.Add(item.ConCount.ToString());
+                list.Add(item.canCount.ToString());
                 foreach (var name in item.Names)
                 {
                     list.Add(name);

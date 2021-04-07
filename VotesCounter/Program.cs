@@ -7,7 +7,7 @@ namespace VotesCounter
 
         static void Main(string[] args)
         {
-            UInterface.UInterface2.UiEntrance();
+            UInterface.UInterface.UIEntrance();
             Console.ReadLine();
         }
     }

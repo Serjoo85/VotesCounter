@@ -24,9 +24,9 @@ namespace VotesCounter.Services
         private static List<Candidate> CreateCandidates (VoteData vd)
         {
             List<Candidate> candidates = new();
-            Parallel.For(0, vd.ConCount, (i) =>
+            Parallel.For(0, vd.canCount, (i) =>
             {
-                int[] votes = new int[vd.ConCount];
+                int[] votes = new int[vd.canCount];
                 for (int j = 0; j < vd.BullCount; j++)
                 {
                     lock (lockObj1)

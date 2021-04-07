@@ -4,12 +4,12 @@ namespace VotesCounter.Model
 {
     public class VoteData
     {
-        private readonly int _ConCount;
+        private readonly int _canCount;
         private readonly int _BullCount;
         private readonly string[] _Names;
         private readonly int[,] _Bulletins;
 
-        public int ConCount => _ConCount;
+        public int canCount => _canCount;
 
         public int BullCount => _BullCount;
 
@@ -20,13 +20,13 @@ namespace VotesCounter.Model
         /// <summary>
         /// Создать блок
         /// </summary>
-        /// <param name="conCount">Количество кандидатов</param>
+        /// <param name="canCount">Количество кандидатов</param>
         /// <param name="bullCount">Количество бюллетеней</param>
         /// <param name="names">Список имён</param>
         /// <param name="bulletins">Список бюллетеней</param>
-        public VoteData(int conCount, int bullCount, string[] names, int[,] bulletins)
+        public VoteData(int canCount, int bullCount, string[] names, int[,] bulletins)
         {
-            _ConCount = conCount;
+            _canCount = canCount;
             _BullCount = bullCount;
             _Names = names;
             _Bulletins = bulletins;
@@ -40,7 +40,7 @@ namespace VotesCounter.Model
             }
             for (int i = 0; i < this.BullCount; i++)
             {
-                for (int j = 0; j < this.ConCount; j++)
+                for (int j = 0; j < this.canCount; j++)
                 {
                     if (Bulletins[i, j] == 1) Console.ForegroundColor = ConsoleColor.Yellow;
                     if (Bulletins[i, j] == 2) Console.ForegroundColor = ConsoleColor.Red;
