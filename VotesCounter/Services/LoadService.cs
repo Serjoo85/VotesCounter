@@ -10,12 +10,12 @@ namespace VotesCounter.Services
     public class LoadService
     {
         private static StepData _sd;
-        public static StepData LoadData(string fileName, StepData sd)
+        public static StepData LoadData(StepData sd)
         {
             _sd = sd;
-            if (File.Exists(fileName))
+            if (File.Exists(_sd.FileName))
             {
-                var loadResult = LoadFromFileAsync(fileName);
+                var loadResult = LoadFromFileAsync(_sd.FileName);
                 if (sd.GetKey()) sd = CreateCandidateList(loadResult.Result);
                 return sd;
             }
