@@ -23,7 +23,6 @@ namespace VotesCounter.Services
             {
                 return new LoadFail("Файл не найден.");
             }
-
         }
 
         private static async Task<IList<string>> LoadFromFileAsync(string fileName)
