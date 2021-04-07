@@ -14,13 +14,13 @@ namespace VotesCounter.Services
         {
             if (File.Exists(fileName))
             {
-                var LoadResult = LoadFromFileAsync(fileName, sd);
-                if(sd.GetKey())sd.vdList = CreateCandidateList(LoadResult.Result, sd);
+                var loadResult = LoadFromFileAsync(fileName, sd);
+                if(sd.GetKey())sd = CreateCandidateList(loadResult.Result, sd);
                 return sd;
             }
             else
             {
-                return new LoadFail("Файл не найден.\nНажмите любую клавишу...");
+                return new LoadFail("Файл не найден.");;
             }
 
         }

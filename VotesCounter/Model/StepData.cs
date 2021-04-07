@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using static System.Console;
 
 namespace VotesCounter.Model
 {
@@ -12,6 +7,11 @@ namespace VotesCounter.Model
     {
         private IList<VoteData> _VdList;
         public IList<VoteData> VdList => _VdList;
+
+        public StepData()
+        {
+            _VdList = new List<VoteData>();
+        }
 
         public void AddVoteData(VoteData vd)
         {
@@ -22,7 +22,12 @@ namespace VotesCounter.Model
 
         public void PrintErr()
         {
-            Console.WriteLine(ErrorMessage);
+            if (ErrorMessage != null)
+            {
+                Console.WriteLine(ErrorMessage + "\nНажмите любую клавишу...");
+                Console.ReadKey();
+                Console.Clear();
+            }
         }
 
         public virtual string GetName() => nameof(StepData);
@@ -30,23 +35,15 @@ namespace VotesCounter.Model
 
     }
 
-    public class CheckInputFail: StepData
-    {
-
-    }
-
-    public class LoadFail: StepData
+    public class LoadFail : StepData
     {
         public LoadFail(string msg) => ErrorMessage = msg;
 
         public override string GetName() => nameof(LoadFail);
         public override bool GetKey() => false;
-
     }
 
-
-
-    public class CreateCandidateListFail: StepData
+    public class CreateCandidateListFail : StepData
     {
         public CreateCandidateListFail(string msg) => ErrorMessage = msg;
 
@@ -54,20 +51,11 @@ namespace VotesCounter.Model
         public override bool GetKey() => false;
     }
 
-    public class CountFail: StepData
-    {
-        public CountFail(string msg) => ErrorMessage = msg;
-        public override string GetName() => nameof(CountFail);
-        public override bool GetKey() => false;
-    }
-
-    public class CreateVoteDataFail: StepData
+    public class CreateVoteDataFail : StepData
     {
         public CreateVoteDataFail(string msg) => ErrorMessage = msg;
 
         public override string GetName() => nameof(CreateVoteDataFail);
         public override bool GetKey() => false;
     }
-
-    
 }

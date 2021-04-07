@@ -17,7 +17,6 @@ namespace VotesCounter.UInterface
 
         static UInterface()
         {
-            sd = new StepData();
             input = "";
             FileNamePattern =
             new Regex(@"[\\|\0\u0001\u0002\u0003\u0004\u0005\u0006\u000e\u000f\u0010\u0011\
@@ -25,20 +24,20 @@ namespace VotesCounter.UInterface
             key = false;
         }
 
-        public static void UIEntrance()
+        public static void UiEntrance()
         {
             while (true)
             {
-                Input();
-                UILoad(input, sd);
-                UICount(sd);
-
+                sd = new StepData();
+                UiInput();
+                UiLoad(input);
+                UiCount();
+                sd.PrintErr();
             }
         }
 
-        private static void Input()
+        private static void UiInput()
         {
-            Console.Clear();
             do
             {
                 WriteLine("Введите имя файла:");
@@ -51,47 +50,35 @@ namespace VotesCounter.UInterface
             {
                 key = (input.Trim(' ').Length) != 0;
                 if (key) key = (!FileNamePattern.IsMatch(input));
-                if (!key) WriteLine("Недопустимое имя файла.\n" +
-                                    "Нажмите любую кнопку...");
+                if (!key) 
+                {
+                    WriteLine("Недопустимое имя файла.\n" +
+                                    "Нажмите любую клавишу...");
+                    Console.ReadKey();
+                    Console.Clear();
+                }
             }
         }
 
-        private static void UILoad(string fileName, StepData sd)
+        private static void UiLoad(string fileName)
         {
             sd = LoadService.LoadData(fileName, sd);
         }
 
-        private static void UICount(StepData sd)
+        private static void UiCount()
         {
-            if (sd.GetKey()) CountService.CountVote(sd.VdList.ToList());
-            sd.PrintErr();
-            //var result = CountService.CountVote(sd);
-        }
-        private static void UIFaile(int x)
-        {
-            string msg = "";
-            switch (x)
+            if (sd.GetKey())
             {
-                case 1:
-                    msg = "";
-                    break;
-                case 2:
-                    msg = "Файла с таким именем не существует.\nНажмите любую кнопку...";
-                    break;
-                case 3:
-                    msg = "Файл не считан.\nНажмите любую кнопку...";
-                    break;
+                PrintResult(
+                    CountService.CountVote(sd.VdList.ToList()));
             }
-            WriteLine(msg);
-            ReadLine();
-            Console.Clear();
         }
 
         private static void PrintResult(List<string> result)
         {
             foreach (var line in result) WriteLine(line + "\n");
-            WriteLine("Нажмите любую кнопку...");
-            ReadLine();
+            WriteLine("Нажмите любую клавишу...");
+            ReadKey();
         }
     }
 }

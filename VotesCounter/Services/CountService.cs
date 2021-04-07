@@ -7,9 +7,6 @@ namespace VotesCounter.Services
 {
     public class CountService
     {
-        private static readonly object lockObj1 = new object();
-        private static readonly object lockObj2 = new object();
-
         public static List<string> CountVote(List<VoteData> items)
         {
             List<string> winners = new();
@@ -29,16 +26,9 @@ namespace VotesCounter.Services
                 int[] votes = new int[vd.canCount];
                 for (int j = 0; j < vd.BullCount; j++)
                 {
-                    lock (lockObj1)
-                    {
-                        votes[vd.Bulletins[j, i] - 1] += 1;
-                    }
+                    votes[vd.Bulletins[j, i] - 1] += 1;
                 }
-
-                lock (lockObj2)
-                {
-                    candidates.Add(new Candidate(votes, i, vd.Names[i]));
-                }
+                candidates.Add(new Candidate(votes, i, vd.Names[i]));
             });
             candidates.Sort();
             return candidates;
