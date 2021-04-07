@@ -10,12 +10,14 @@ namespace VotesCounter.UInterface
 {
     public static class UInterface
     {
-        static string input;
+        private static string input;
         private static readonly Regex FileNamePattern;
         private static bool key;
+        private static StepData sd;
 
         static UInterface()
         {
+            sd = new StepData();
             input = "";
             FileNamePattern =
             new Regex(@"[\\|\0\u0001\u0002\u0003\u0004\u0005\u0006\u000e\u000f\u0010\u0011\
@@ -27,33 +29,34 @@ namespace VotesCounter.UInterface
         {
             while (true)
             {
-                Console.Clear();
-                do
-                {
-                    WriteLine("Введите имя файла:");
-                    input = ReadLine();
-                    Console.Clear();
-                    CheckMenuInput(input);
-                } while (!key);
-
-                if (UILoad(input))
+                Input();
+                if (UILoad(input,sd))
                 {
                     UICount(LoadService.LoadData(input));
                 }
             }
         }
 
-        private static void CheckMenuInput(string input)
+        private static void Input()
         {
-            key = (input.Trim(' ').Length) != 0;
-            if (key) key = (!FileNamePattern.IsMatch(input));
-            if (!key) UIFaile(1);
+            Console.Clear();
+            do
+            {
+                WriteLine("Введите имя файла:");
+                input = ReadLine();
+                Console.Clear();
+                CheckInput(input);
+            } while (!key);
+            
+            void CheckInput(string input)
+            {
+                key = (input.Trim(' ').Length) != 0;
+                if (key) key = (!FileNamePattern.IsMatch(input));
+                if (!key) UIFaile(1);
+            }
         }
 
-
-
-
-        private static bool UILoad(string fileName)
+        private static bool UILoad(string fileName, StepData sd)
         {
             var vdr = LoadService.LoadData(fileName);
             if (vdr.Count > 0)

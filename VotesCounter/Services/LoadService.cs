@@ -20,6 +20,10 @@ namespace VotesCounter.Services
                 var LoadResult = LoadFromFileAsync(fileName);
                 return CreateCandidateList(LoadResult.Result, fileName);
             }
+
+            {
+                return null;
+            }
         }
 
         private static async Task<IList<string>> LoadFromFileAsync(string fileName)
