@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using VotesCounter.Data;
+using VotesCounter.Model;
 using VotesCounter.Services;
 using static System.Console;
 
@@ -13,7 +14,7 @@ namespace VotesCounter.UInterface
     {
         static string input;
         private static readonly Regex FileNamePattern;
-        private static bool key = false;
+        private static bool key;
 
         static UInterface()
         {
@@ -21,6 +22,7 @@ namespace VotesCounter.UInterface
             FileNamePattern = 
             new Regex(@"[\\|\0\u0001\u0002\u0003\u0004\u0005\u0006\u000e\u000f\u0010\u0011\
                 u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f]");
+            key = false;
         }
 
         public static void UIEntrance()
@@ -42,29 +44,28 @@ namespace VotesCounter.UInterface
         {
             key = (input.Trim(' ').Length) != 0;
             if (key) key = (!FileNamePattern.IsMatch(input));
-            if (!key) UIMessage(1);
+            if (!key) UIFaile(1);
         }
         private static void UILoad(string fileName)
         {
-            VoteDataRepository vdr;
             if (File.Exists(fileName))
             {
-                LoadService.LoadData(out vdr, fileName);
-                UICount(vdr);
+                
+                UICount(LoadService.LoadData(fileName));
             }
             else
             {
-                UIMessage(2);
+                UIFaile(2);
             }
         }
 
-        private static void UICount(VoteDataRepository vdr)
+        private static void UICount(IList<VoteData> vdr)
         {
-            var result = CountService.CountVote(vdr.GetItems().ToList());
+            var result = CountService.CountVote(vdr.ToList());
             PrintResult(result);
 
         }
-        private static void UIMessage(int x)
+        private static void UIFaile(int x)
         {
             Console.Clear();
             string msg = "";
@@ -74,11 +75,7 @@ namespace VotesCounter.UInterface
                     msg = "Недопустимое имя файла.\nНажмите любую кнопку...";
                     break;
                 case 2:
-                    msg = "Файла с таким именем не существует.\n" +
-                          "Нажмите любую кнопку...";
-                    break;
-                case 3:
-                    msg = "Нажмите любую кнопку...";
+                    msg = "Файла с таким именем не существует.\nНажмите любую кнопку...";
                     break;
             }
             WriteLine(msg);

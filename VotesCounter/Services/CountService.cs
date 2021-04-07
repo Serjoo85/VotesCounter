@@ -5,7 +5,7 @@ using VotesCounter.Model;
 
 namespace VotesCounter.Services
 {
-    public static class CountService
+    public class CountService
     {
         private static readonly object lockObj1 = new object();
         private static readonly object lockObj2 = new object();
