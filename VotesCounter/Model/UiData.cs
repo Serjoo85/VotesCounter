@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VotesCounter.Model
 {
-    public class StepData
+    public class UiData
     {
         private IList<VoteData> _VdList;
         public IList<VoteData> VdList => _VdList;
@@ -18,7 +18,7 @@ namespace VotesCounter.Model
             set => _FileName = value;
         }
 
-        public StepData(string fileName)
+        public UiData(string fileName)
         {
             _VdList = new List<VoteData>();
             _Winners = new List<string>();
@@ -26,7 +26,7 @@ namespace VotesCounter.Model
             Console.Clear();
         }
 
-        protected StepData()
+        protected UiData()
         {
 
         }
@@ -56,26 +56,26 @@ namespace VotesCounter.Model
         public virtual bool GetKey() => true;
     }
 
-    public class LoadFail : StepData
+    public class LoadFail : UiData
     {
         public LoadFail(string msg) => Message = msg;
         public override bool GetKey() => false;
     }
 
-    public class CreateCandidateListFail : StepData
+    public class CreateCandidateListFail : UiData
     {
         public CreateCandidateListFail(string msg) => Message = msg;
         public override bool GetKey() => false;
     }
 
-    public class CreateVoteDataFail : StepData
+    public class CreateVoteDataFail : UiData
     {
         public CreateVoteDataFail(string msg) => Message = msg;
 
         public override bool GetKey() => false;
     }
 
-    public class CheckInputFail : StepData
+    public class CheckInputFail : UiData
     {
         public CheckInputFail(string msg) => Message = msg;
 

@@ -7,8 +7,8 @@ namespace VotesCounter.Services
 {
     public static class CountService
     {
-        private static StepData _sd;
-        public static void CountVote(StepData sd)
+        private static UiData _sd;
+        public static void CountVote(UiData sd)
         {
             _sd = sd;
             foreach (var vd in _sd.VdList)

@@ -9,8 +9,8 @@ namespace VotesCounter.Services
 {
     public class LoadService
     {
-        private static StepData _sd;
-        public static StepData LoadData(StepData sd)
+        private static UiData _sd;
+        public static UiData LoadData(UiData sd)
         {
             _sd = sd;
             if (File.Exists(_sd.FileName))
@@ -45,7 +45,7 @@ namespace VotesCounter.Services
             return voteDataString;
         }
 
-        private static StepData CreateCandidateList(IList<string> voteDataString)
+        private static UiData CreateCandidateList(IList<string> voteDataString)
         {
             IList<VoteData> items = new List<VoteData>();
             if (int.TryParse(voteDataString[0], out var blockCount))

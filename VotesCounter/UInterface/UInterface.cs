@@ -8,7 +8,7 @@ namespace VotesCounter.UInterface
     public static class UInterface
     {
         private static readonly Regex FileNamePattern;
-        private static StepData sd;
+        private static UiData sd;
 
         static UInterface()
         {
@@ -33,7 +33,7 @@ namespace VotesCounter.UInterface
             bool key = false;
 
             WriteLine("Введите имя файла:");
-            sd = new StepData(ReadLine());
+            sd = new UiData(ReadLine());
             CheckInput();
 
             void CheckInput()
