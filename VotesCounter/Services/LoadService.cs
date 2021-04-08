@@ -39,7 +39,7 @@ namespace VotesCounter.Services
             }
             catch (Exception e)
             {
-                _sd = new LoadFail("Не удалось прочитать файл {fileName}, ошибка:");
+                _sd = new LoadFail($"Не удалось прочитать файл {fileName}, ошибка:");
             }
             return voteDataString;
         }
@@ -150,7 +150,6 @@ namespace VotesCounter.Services
             return string.Format("Ошибка обработки данных. {0}. стр. {1}", mtext, lineNumber + 1);
         }
     }
-
 
     static class Extensions
     {

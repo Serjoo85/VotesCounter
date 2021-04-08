@@ -4,7 +4,8 @@
     {
         static void Main(string[] args)
         {
-            UInterface.UInterface.UiEntrance();
+            UInterface.UInterface ui = new UInterface.UInterface();
+            ui.UiEntrance();
         }
     }
 }

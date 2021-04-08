@@ -5,19 +5,19 @@ using static System.Console;
 
 namespace VotesCounter.UInterface
 {
-    public static class UInterface
+    public class UInterface
     {
-        private static readonly Regex FileNamePattern;
-        private static UiData sd;
+        private readonly Regex FileNamePattern;
+        private UiData sd;
 
-        static UInterface()
+        public UInterface()
         {
             FileNamePattern =
             new Regex(@"[\\|\0\u0001\u0002\u0003\u0004\u0005\u0006\u000e\u000f\u0010\u0011\
                 u0012\u0013\u0014\u0015\u0016\u0017\u0018\u0019\u001a\u001b\u001c\u001d\u001e\u001f]");
         }
 
-        public static void UiEntrance()
+        public void UiEntrance()
         {
             while (true)
             {
@@ -28,7 +28,7 @@ namespace VotesCounter.UInterface
             }
         }
 
-        private static void UiInput()
+        private void UiInput()
         {
             bool key = false;
 
@@ -47,14 +47,15 @@ namespace VotesCounter.UInterface
             }
         }
 
-        private static void UiLoad()
+        private void UiLoad()
         {
             if (sd.GetKey()) sd = LoadService.LoadData(sd);
         }
 
-        private static void UiCount()
+        private void UiCount()
         {
             if (sd.GetKey()) CountService.CountVote(sd);
         }
     }
+
 }
