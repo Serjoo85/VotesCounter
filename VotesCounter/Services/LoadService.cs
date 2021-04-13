@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VotesCounter.Model;
+using System.Windows;
 
 namespace VotesCounter.Services
 {
@@ -13,7 +14,7 @@ namespace VotesCounter.Services
         public static UiData LoadData(UiData sd)
         {
             _sd = sd;
-            if (File.Exists(_sd.FileName))
+            if (File.Exists($"{Environment.CurrentDirectory}\\{_sd.FileName}"))
             {
                 var loadResult = LoadFromFileAsync(_sd.FileName);
                 if (sd.GetKey()) sd = CreateCandidateList(loadResult.Result);
