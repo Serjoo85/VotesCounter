@@ -14,6 +14,7 @@ namespace VotesCounter.UInterface
         {
             while (true)
             {
+                //UiTestGeneration();
                 UiInput();
                 UiLoad();
                 UiCount();
@@ -21,12 +22,17 @@ namespace VotesCounter.UInterface
             }
         }
 
+        private void UiTestGeneration()
+        {
+            TestDataService.CreateFile(TestData.GetTestVoteData(1, 4, 6));
+        }
+
         private void UiInput()
         {
             bool key = false;
 
-            WriteLine("Введите имя файла:");
-            sd = new UiData(ReadLine());
+            //WriteLine("Введите имя файла:");
+            sd = new UiData("test.txt");
             CheckInput();
 
             void CheckInput()

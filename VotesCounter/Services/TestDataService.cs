@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VotesCounter.Model;
 
 namespace VotesCounter.Services
@@ -31,15 +28,17 @@ namespace VotesCounter.Services
                         bull += item.Bulletins[i, j].ToString();
                         if (j != item.Bulletins.GetLength(1)) bull += " ";
                     }
+
                     s.Add(bull);
                     bull = "";
                 }
+
                 s.Add("");
             }
 
             try
             {
-                System.IO.File.WriteAllLines("randomfile.txt", s);
+                System.IO.File.WriteAllLines("test.txt", s);
                 Console.WriteLine("Файл успешно создан!");
             }
             catch (Exception e)
@@ -47,5 +46,6 @@ namespace VotesCounter.Services
                 Console.WriteLine("Файл не создан, ошибка:");
                 Console.WriteLine(e);
             }
+        }
     }
 }
