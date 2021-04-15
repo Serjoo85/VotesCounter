@@ -22,10 +22,6 @@ namespace VotesCounter.Model
             _Name = name;
         }
 
-        public int[] Votes => _Votes;
-
-        public int Index => _Index;
-
         public string Name => _Name;
 
         public int CompareTo(object obj)

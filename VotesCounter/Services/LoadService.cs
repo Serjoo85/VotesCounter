@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using VotesCounter.Model;
-using System.Windows;
 
 namespace VotesCounter.Services
 {
