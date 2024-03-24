@@ -17,7 +17,7 @@ namespace VotesCounter.Services
             {
                 var loadResult = LoadFromFileAsync(_sd.FileName);
                 if (sd.GetKey()) sd = CreateCandidateList(loadResult.Result);
-                return sd;
+                return sd; 
             }
             else
             {
